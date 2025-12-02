@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  DRIVER
+  STUDENT
+  ADMIN
+}
+
+enum LessonStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String
+  role      UserRole
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  driver  Driver?
+  student Student?
+
+  @@map("users")
+}
+
+model Driver {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  licenseNumber     String   @unique
+  licenseCategory   String
+  yearsExperience   Int
+  vehicleModel      String
+  vehiclePlate      String
+  vehicleYear       Int
+  hasOwnVehicle     Boolean  @default(true)
+  
+  bio               String?
+  profileImage      String?
+  
+  city              String
+  state             String
+  zipCode           String
+  
+  hourlyRate        Float
+  isActive          Boolean  @default(true)
+  isApproved        Boolean  @default(false)
+  
+  rating            Float    @default(0)
+  totalLessons      Int      @default(0)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  availabilities    Availability[]
+  lessons           Lesson[]
+
+  @@map("drivers")
+}
+
+model Student {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  dateOfBirth     DateTime
+  city            String
+  state           String
+  
+  hasPermit       Boolean  @default(false)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  lessons         Lesson[]
+
+  @@map("students")
+}
+
+model Availability {
+  id          String    @id @default(uuid())
+  driverId    String
+  driver      Driver    @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  
+  dayOfWeek   DayOfWeek
+  startTime   String    // Format: "HH:MM"
+  endTime     String    // Format: "HH:MM"
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("availabilities")
+}
+
+model Lesson {
+  id              String       @id @default(uuid())
+  driverId        String
+  driver          Driver       @relation(fields: [driverId], references: [id])
+  
+  studentId       String
+  student         Student      @relation(fields: [studentId], references: [id])
+  
+  scheduledDate   DateTime
+  duration        Int          // Duration in hours
+  location        String
+  
+  status          LessonStatus @default(PENDING)
+  
+  price           Float
+  
+  notes           String?
+  rating          Int?         // 1-5 rating from student
+  review          String?
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@map("lessons")
+}

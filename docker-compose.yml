@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dirija-postgres
+    environment:
+      POSTGRES_USER: dirija
+      POSTGRES_PASSWORD: dirija123
+      POSTGRES_DB: dirija_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dirija-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dirija"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dirija-backend
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://dirija:dirija123@postgres:5432/dirija_db
+      JWT_SECRET: dirija-super-secret-jwt-key-change-in-production
+      PORT: 4000
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - dirija-network
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dirija-frontend
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    networks:
+      - dirija-network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+
+networks:
+  dirija-network:
+    driver: bridge
