@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
 
 class ApiClient {
   private client: AxiosInstance
@@ -11,6 +11,7 @@ class ApiClient {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     })
 
     // Request interceptor to add token
@@ -39,6 +40,28 @@ class ApiClient {
         return Promise.reject(error)
       }
     )
+  }
+
+  // Health Check
+  async healthCheck() {
+    const response = await this.client.get('/health')
+    return response.data
+  }
+
+  // Instructors (Lead Capture)
+  async createInstructor(data: { name: string; email: string; phone: string }) {
+    const response = await this.client.post('/api/instructors', data)
+    return response.data
+  }
+
+  async getInstructors() {
+    const response = await this.client.get('/api/instructors')
+    return response.data
+  }
+
+  async getInstructorById(id: string) {
+    const response = await this.client.get(`/api/instructors/${id}`)
+    return response.data
   }
 
   // Auth

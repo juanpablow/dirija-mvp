@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
+import { useInstructorRegistration } from '@/hooks/useApi'
 
 interface FormData {
   name: string
@@ -15,9 +16,8 @@ export function InstructorRegistrationForm() {
     email: '',
     phone: '',
   })
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState('')
+  
+  const { register, loading, error, success, reset } = useInstructorRegistration()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -25,41 +25,22 @@ export function InstructorRegistrationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
-    setLoading(true)
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
-      
-      const response = await fetch(`${API_URL}/api/instructors`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Erro ao enviar cadastro')
-      }
-
-      setSuccess(true)
+      await register(formData)
       
       // Scroll suave para a mensagem de sucesso
       setTimeout(() => {
         document.getElementById('instructor-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }, 100)
-    } catch (err: any) {
-      setError(err.message || 'Erro ao enviar cadastro. Tente novamente.')
-    } finally {
-      setLoading(false)
+    } catch (err) {
+      // Erro já é tratado pelo hook
+      console.error('Erro ao enviar cadastro:', err)
     }
   }
 
   const resetForm = () => {
-    setSuccess(false)
+    reset()
     setFormData({ name: '', email: '', phone: '' })
   }
 
