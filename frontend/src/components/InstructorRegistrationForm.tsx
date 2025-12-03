@@ -29,8 +29,22 @@ export function InstructorRegistrationForm() {
     setLoading(true)
 
     try {
-      // Simulando envio - integração com backend pode ser adicionada aqui
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'
+      
+      const response = await fetch(`${API_URL}/api/instructors`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Erro ao enviar cadastro')
+      }
+
       setSuccess(true)
       
       // Scroll suave para a mensagem de sucesso
@@ -38,7 +52,7 @@ export function InstructorRegistrationForm() {
         document.getElementById('instructor-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }, 100)
     } catch (err: any) {
-      setError('Erro ao enviar cadastro. Tente novamente.')
+      setError(err.message || 'Erro ao enviar cadastro. Tente novamente.')
     } finally {
       setLoading(false)
     }

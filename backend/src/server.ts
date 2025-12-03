@@ -1,0 +1,58 @@
+import 'dotenv/config';
+import express, { Application, Request, Response, NextFunction } from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+
+import instructorRoutes from './routes/instructor.routes';
+
+const app: Application = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+
+// Health check
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ 
+    status: 'ok', 
+    message: 'DiriJá API is running',
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Routes
+app.use('/api/instructors', instructorRoutes);
+
+// 404 handler
+app.use((_req: Request, res: Response) => {
+  res.status(404).json({
+    success: false,
+    error: 'Rota não encontrada',
+  });
+});
+
+// Error handling middleware
+interface ApiError extends Error {
+  status?: number;
+}
+
+app.use((err: ApiError, _req: Request, res: Response, _next: NextFunction) => {
+  console.error('Error:', err);
+  
+  res.status(err.status || 500).json({
+    success: false,
+    error: err.message || 'Erro interno do servidor',
+  });
+});
+
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`🚗 DiriJá Backend running on port ${PORT}`);
+  console.log(`📡 Health check: http://localhost:${PORT}/health`);
+  console.log(`📝 Instructor API: http://localhost:${PORT}/api/instructors`);
+});
+
+export default app;
