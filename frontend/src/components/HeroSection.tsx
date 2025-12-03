@@ -31,10 +31,10 @@ export function HeroSection() {
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>
             <Link
-              href="/em-breve"
+              href="/coming-soon"
               className="bg-white text-primary-600 border-2 border-primary-600 px-6 md:px-8 py-3 md:py-4 rounded-lg text-base md:text-lg font-semibold hover:bg-primary-50 transition"
             >
-              Encontrar Instrutor (Em breve)
+              Find Instructor (Coming Soon)
             </Link>
           </div>
         </div>

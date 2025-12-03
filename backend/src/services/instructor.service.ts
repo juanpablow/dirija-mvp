@@ -5,41 +5,39 @@ import { Prisma } from '@prisma/client';
 class InstructorService {
   /**
    * Cria um lead de instrutor (captura inicial de dados)
-   * Não cria uma conta completa, apenas armazena os dados de contato
+   * Não cria usuário ainda, apenas captura os dados de interesse
    */
   async createInstructorLead(data: CreateInstructorDTO): Promise<InstructorResponse> {
     try {
-      // Verifica se já existe um usuário com este email
-      const existingUser = await prisma.user.findUnique({
+      // Verifica se já existe um instrutor com este email
+      const existingInstructor = await prisma.instructor.findUnique({
         where: { email: data.email },
       });
 
-      if (existingUser) {
+      if (existingInstructor) {
         throw new Error('Este email já está cadastrado');
       }
 
-      // Cria o usuário com role DRIVER (sem senha por enquanto, será definida posteriormente)
-      // Usamos um hash temporário que será substituído quando o instrutor completar o cadastro
-      const tempPassword = Math.random().toString(36).substring(2, 15);
-      
-      const user = await prisma.user.create({
+      // Cria o instrutor como LEAD (sem usuário associado ainda)
+      const instructor = await prisma.instructor.create({
         data: {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          role: 'DRIVER',
-          password: tempPassword, // Senha temporária, será redefinida pelo instrutor
+          status: 'LEAD', // Status inicial: apenas um lead
+          isActive: false, // Inativo até completar o cadastro
         },
         select: {
           id: true,
           name: true,
           email: true,
           phone: true,
+          status: true,
           createdAt: true,
         },
       });
 
-      return user;
+      return instructor;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         // P2002 é o código para unique constraint violation
@@ -57,19 +55,17 @@ class InstructorService {
   }
 
   /**
-   * Lista todos os leads de instrutores
+   * Lista todos os instrutores (incluindo leads)
    */
   async getAllInstructorLeads(): Promise<InstructorResponse[]> {
     try {
-      const instructors = await prisma.user.findMany({
-        where: {
-          role: 'DRIVER',
-        },
+      const instructors = await prisma.instructor.findMany({
         select: {
           id: true,
           name: true,
           email: true,
           phone: true,
+          status: true,
           createdAt: true,
         },
         orderBy: {
@@ -84,20 +80,20 @@ class InstructorService {
   }
 
   /**
-   * Busca um lead de instrutor por ID
+   * Busca um instrutor por ID
    */
   async getInstructorLeadById(id: string): Promise<InstructorResponse | null> {
     try {
-      const instructor = await prisma.user.findFirst({
+      const instructor = await prisma.instructor.findUnique({
         where: {
           id,
-          role: 'DRIVER',
         },
         select: {
           id: true,
           name: true,
           email: true,
           phone: true,
+          status: true,
           createdAt: true,
         },
       });

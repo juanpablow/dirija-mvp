@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Car, Clock, ArrowLeft } from 'lucide-react'
 
-export default function EmBreve() {
+export default function ComingSoon() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-white flex items-center justify-center px-4">
       <div className="max-w-2xl w-full text-center">

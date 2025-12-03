@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { UserRole, InstructorStatus } from '@prisma/client';
 
 export interface CreateInstructorDTO {
   name: string;
@@ -11,6 +11,7 @@ export interface InstructorResponse {
   name: string;
   email: string;
   phone: string;
+  status?: InstructorStatus;
   createdAt: Date;
 }
 

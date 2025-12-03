@@ -9,12 +9,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum UserRole {
-  DRIVER
-  STUDENT
-  ADMIN
-}
-
 enum LessonStatus {
   PENDING
   CONFIRMED
@@ -32,71 +26,94 @@ enum DayOfWeek {
   SUNDAY
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  name      String
-  phone     String
-  role      UserRole
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  driver  Driver?
-  student Student?
-
-  @@map("users")
+enum InstructorStatus {
+  LEAD          // Lead capturado, ainda não completou cadastro
+  PENDING       // Cadastro completo, aguardando aprovação
+  APPROVED      // Aprovado e ativo
+  REJECTED      // Rejeitado
+  INACTIVE      // Inativo/Suspenso
 }
 
-model Driver {
-  id                String   @id @default(uuid())
-  userId            String   @unique
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+// Tabela de Instrutores - independente, não herda de User
+model Instructor {
+  id                String           @id @default(uuid())
   
-  licenseNumber     String   @unique
-  licenseCategory   String
-  yearsExperience   Int
-  vehicleModel      String
-  vehiclePlate      String
-  vehicleYear       Int
-  hasOwnVehicle     Boolean  @default(true)
+  // Informações básicas (capturadas no lead)
+  name              String
+  email             String           @unique
+  phone             String
+  
+  // Autenticação (adicionado quando completa o cadastro)
+  password          String?
+  emailVerified     Boolean          @default(false)
+  
+  // Informações profissionais (preenchidas depois)
+  licenseNumber     String?          @unique
+  licenseCategory   String?
+  yearsExperience   Int?
+  vehicleModel      String?
+  vehiclePlate      String?
+  vehicleYear       Int?
+  hasOwnVehicle     Boolean          @default(true)
   
   bio               String?
   profileImage      String?
   
-  city              String
-  state             String
-  zipCode           String
+  // Localização
+  city              String?
+  state             String?
+  zipCode           String?
   
-  hourlyRate        Float
-  isActive          Boolean  @default(true)
-  isApproved        Boolean  @default(false)
+  // Financeiro
+  hourlyRate        Float?
   
-  rating            Float    @default(0)
-  totalLessons      Int      @default(0)
+  // Status
+  status            InstructorStatus @default(LEAD)
+  isActive          Boolean          @default(false)
   
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  // Avaliações
+  rating            Float            @default(0)
+  totalLessons      Int              @default(0)
+  
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 
   availabilities    Availability[]
   lessons           Lesson[]
 
-  @@map("drivers")
+  @@map("instructors")
 }
 
+// Tabela de Alunos - independente, não herda de User
 model Student {
-  id              String   @id @default(uuid())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String        @id @default(uuid())
   
-  dateOfBirth     DateTime
-  city            String
-  state           String
+  // Informações básicas
+  name            String
+  email           String        @unique
+  phone           String
   
-  hasPermit       Boolean  @default(false)
+  // Autenticação
+  password        String?
+  emailVerified   Boolean       @default(false)
   
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  // Informações pessoais
+  dateOfBirth     DateTime?
+  city            String?
+  state           String?
+  
+  hasPermit       Boolean       @default(false)
+  
+  // Status
+  status          StudentStatus @default(ACTIVE)
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   lessons         Lesson[]
 
@@ -104,24 +121,24 @@ model Student {
 }
 
 model Availability {
-  id          String    @id @default(uuid())
-  driverId    String
-  driver      Driver    @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  id           String     @id @default(uuid())
+  instructorId String
+  instructor   Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
   
-  dayOfWeek   DayOfWeek
-  startTime   String    // Format: "HH:MM"
-  endTime     String    // Format: "HH:MM"
+  dayOfWeek    DayOfWeek
+  startTime    String     // Format: "HH:MM"
+  endTime      String     // Format: "HH:MM"
   
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
   @@map("availabilities")
 }
 
 model Lesson {
   id              String       @id @default(uuid())
-  driverId        String
-  driver          Driver       @relation(fields: [driverId], references: [id])
+  instructorId    String
+  instructor      Instructor   @relation(fields: [instructorId], references: [id])
   
   studentId       String
   student         Student      @relation(fields: [studentId], references: [id])
