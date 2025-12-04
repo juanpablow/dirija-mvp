@@ -11,7 +11,7 @@ export function InstructorCTASection() {
               Cadastre-se como Instrutor Autônomo
             </h2>
             <p className="text-lg md:text-xl text-primary-50 leading-relaxed px-4">
-              A nova era da habilitação chegou — e você pode ser protagonista dessa mudança.
+              A nova era da habilitação chegou e você pode ser protagonista dessa mudança.
             </p>
           </div>
 
