@@ -1,4 +1,4 @@
-import { UserRole, InstructorStatus } from '@prisma/client';
+import { InstructorStatus } from '@prisma/client';
 
 export interface CreateInstructorDTO {
   name: string;
@@ -23,7 +23,7 @@ export interface ApiResponse<T = any> {
 }
 
 export interface JwtPayload {
-  userId: string;
+  instructorId?: string;
+  studentId?: string;
   email: string;
-  role: UserRole;
 }
