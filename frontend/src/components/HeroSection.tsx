@@ -34,7 +34,7 @@ export function HeroSection() {
               href="/coming-soon"
               className="bg-white text-primary-600 border-2 border-primary-600 px-6 md:px-8 py-3 md:py-4 rounded-lg text-base md:text-lg font-semibold hover:bg-primary-50 transition"
             >
-              Encontrar Instrutor (Em breve)
+              Encontrar Instrutor
             </Link>
           </div>
         </div>
