@@ -1,48 +1,55 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { ArrowRight, CheckCircle2 } from 'lucide-react'
-import { useInstructorRegistration } from '@/hooks/useApi'
+import { useState } from "react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { useInstructorRegistration } from "@/hooks/useApi";
+import { trackInstructorLead } from "@/lib/gtag";
 
 interface FormData {
-  name: string
-  email: string
-  phone: string
+  name: string;
+  email: string;
+  phone: string;
 }
 
 export function InstructorRegistrationForm() {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    phone: '',
-  })
-  
-  const { register, loading, error, success, reset } = useInstructorRegistration()
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  const { register, loading, error, success, reset } =
+    useInstructorRegistration();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      await register(formData)
-      
+      await register(formData);
+
+      // Rastrear conversão do Google Ads
+      trackInstructorLead();
+
       // Scroll suave para a mensagem de sucesso
       setTimeout(() => {
-        document.getElementById('instructor-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      }, 100)
+        document
+          .getElementById("instructor-form")
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
     } catch (err) {
       // Erro já é tratado pelo hook
-      console.error('Erro ao enviar cadastro:', err)
+      console.error("Erro ao enviar cadastro:", err);
     }
-  }
+  };
 
   const resetForm = () => {
-    reset()
-    setFormData({ name: '', email: '', phone: '' })
-  }
+    reset();
+    setFormData({ name: "", email: "", phone: "" });
+  };
 
   if (success) {
     return (
@@ -59,7 +66,9 @@ export function InstructorRegistrationForm() {
           Obrigado pelo interesse, <strong>{formData.name}</strong>!
         </p>
         <p className="text-sm text-gray-600 mb-8">
-          Nossa equipe irá analisar seu cadastro e entrará em contato em breve através do email <strong>{formData.email}</strong> ou telefone <strong>{formData.phone}</strong>.
+          Nossa equipe irá analisar seu cadastro e entrará em contato em breve
+          através do email <strong>{formData.email}</strong> ou telefone{" "}
+          <strong>{formData.phone}</strong>.
         </p>
         <button
           onClick={resetForm}
@@ -69,7 +78,7 @@ export function InstructorRegistrationForm() {
           <ArrowRight className="ml-2 w-4 h-4" />
         </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -89,7 +98,10 @@ export function InstructorRegistrationForm() {
         )}
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Nome Completo *
           </label>
           <input
@@ -105,7 +117,10 @@ export function InstructorRegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Email *
           </label>
           <input
@@ -121,7 +136,10 @@ export function InstructorRegistrationForm() {
         </div>
 
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+          <label
+            htmlFor="phone"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
             Telefone *
           </label>
           <input
@@ -143,9 +161,25 @@ export function InstructorRegistrationForm() {
         >
           {loading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
               Enviando...
             </>
@@ -158,5 +192,5 @@ export function InstructorRegistrationForm() {
         </button>
       </form>
     </>
-  )
+  );
 }
