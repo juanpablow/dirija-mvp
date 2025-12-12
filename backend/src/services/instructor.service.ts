@@ -40,14 +40,16 @@ class InstructorService {
         },
       });
 
-      // Envia email de boas-vindas de forma assíncrona (não bloqueia a resposta)
-      sendInstructorWelcomeEmail({
-        name: instructor.name,
-        email: instructor.email,
-      }).catch((error) => {
+      // Envia email de boas-vindas (aguarda conclusão mas não quebra o fluxo se falhar)
+      try {
+        await sendInstructorWelcomeEmail({
+          name: instructor.name,
+          email: instructor.email,
+        });
+      } catch (error) {
         console.error("Erro ao enviar email de boas-vindas:", error);
         // Não lança erro para não quebrar o fluxo de cadastro
-      });
+      }
 
       return instructor;
     } catch (error) {
