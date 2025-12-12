@@ -39,7 +39,7 @@ enum StudentStatus {
   INACTIVE
 }
 
-// Tabela de Instrutores - independente, não herda de User
+// Tabela de Instrutores
 model Instructor {
   id                String           @id @default(uuid())
   
@@ -89,7 +89,7 @@ model Instructor {
   @@map("instructors")
 }
 
-// Tabela de Alunos - independente, não herda de User
+// Tabela de Alunos
 model Student {
   id              String        @id @default(uuid())
   
