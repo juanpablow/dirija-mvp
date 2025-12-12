@@ -29,9 +29,9 @@ export const instructorWelcomeEmailTemplate = ({
     
     ${InfoBox("📋 Próximos Passos", [
       "Nossa equipe irá revisar suas informações",
-      "Entraremos em contato por email ou telefone em até 48 horas.",
-      // "Você receberá instruções sobre como completar seu perfil",
-      // "Após aprovação, você poderá começar a dar aulas!",
+      "Entraremos em contato por email ou telefone o mais breve possível.",
+      "Você receberá instruções sobre como completar seu perfil",
+      "Após aprovação, você poderá começar a dar aulas!",
     ])}
     
     ${Signature("Equipe DiriJá")}
