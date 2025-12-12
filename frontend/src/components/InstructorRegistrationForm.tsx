@@ -93,13 +93,24 @@ export function InstructorRegistrationForm() {
         <h3 className="text-2xl font-bold text-gray-900 mb-4">
           Cadastro Recebido!
         </h3>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-4">
           Obrigado pelo interesse, <strong>{formValues.name}</strong>!
         </p>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <p className="text-sm text-blue-900 mb-2">
+            📧 <strong>Verifique seu email!</strong>
+          </p>
+          <p className="text-sm text-blue-800">
+            Enviamos uma mensagem para <strong>{formValues.email}</strong> com
+            mais detalhes sobre os próximos passos.
+          </p>
+          <p className="text-xs text-blue-700 mt-2">
+            💡 Não recebeu? Verifique sua caixa de spam ou lixo eletrônico.
+          </p>
+        </div>
         <p className="text-sm text-gray-600 mb-8">
           Nossa equipe irá analisar seu cadastro e entrará em contato em breve
-          através do email <strong>{formValues.email}</strong> ou telefone{" "}
-          <strong>{formValues.phone}</strong>.
+          através do email ou telefone <strong>{formValues.phone}</strong>.
         </p>
         <button
           onClick={handleReset}
