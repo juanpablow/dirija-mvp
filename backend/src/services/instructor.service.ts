@@ -41,13 +41,19 @@ class InstructorService {
       });
 
       // Envia email de boas-vindas de forma assíncrona (não bloqueia a resposta)
+      console.log("=== TENTANDO ENVIAR EMAIL DE BOAS-VINDAS ===");
+      console.log("Instrutor criado:", { name: instructor.name, email: instructor.email });
       sendInstructorWelcomeEmail({
         name: instructor.name,
         email: instructor.email,
-      }).catch((error) => {
-        console.error("Erro ao enviar email de boas-vindas:", error);
-        // Não lança erro para não quebrar o fluxo de cadastro
-      });
+      })
+        .then((result) => {
+          console.log("✅ Resultado do envio de email:", JSON.stringify(result, null, 2));
+        })
+        .catch((error) => {
+          console.error("❌ Erro ao enviar email de boas-vindas:", error);
+          // Não lança erro para não quebrar o fluxo de cadastro
+        });
 
       return instructor;
     } catch (error) {
