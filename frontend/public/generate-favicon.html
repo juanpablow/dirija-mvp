@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Favicon</title>
+</head>
+<body>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <canvas id="canvas32" width="32" height="32"></canvas>
+    <canvas id="canvas16" width="16" height="16"></canvas>
+    
+    <script>
+        const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0284c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0369a1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="carGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0f2fe;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="64" fill="url(#bgGradient)"/>
+  <path d="M 35 35 L 75 35 C 95 35, 95 50, 95 64 C 95 78, 95 93, 75 93 L 35 93 Z" fill="url(#carGradient)" stroke="#ffffff" stroke-width="3"/>
+  <circle cx="64" cy="64" r="12" fill="none" stroke="#0284c7" stroke-width="2.5"/>
+  <circle cx="64" cy="64" r="3" fill="#0284c7"/>
+  <line x1="64" y1="52" x2="64" y2="56" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+  <line x1="64" y1="72" x2="64" y2="76" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+  <line x1="52" y1="64" x2="56" y2="64" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+  <line x1="72" y1="64" x2="76" y2="64" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="48" cy="93" r="8" fill="#0284c7"/>
+  <circle cx="48" cy="93" r="4" fill="#ffffff"/>
+  <circle cx="82" cy="93" r="8" fill="#0284c7"/>
+  <circle cx="82" cy="93" r="4" fill="#ffffff"/>
+  <path d="M 45 50 L 70 50 C 80 50, 82 55, 82 64 C 82 73, 80 78, 70 78 L 45 78 Z" fill="none" stroke="#0284c7" stroke-width="2" opacity="0.3"/>
+</svg>`;
+
+        function generateFavicon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, size, size);
+                const link = document.createElement('a');
+                link.download = `favicon-${size}x${size}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+            
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            img.src = url;
+        }
+
+        // Gerar todos os tamanhos
+        setTimeout(() => {
+            generateFavicon(512);
+            setTimeout(() => generateFavicon(192), 500);
+            setTimeout(() => generateFavicon(32), 1000);
+            setTimeout(() => generateFavicon(16), 1500);
+        }, 500);
+    </script>
+</body>
+</html>
