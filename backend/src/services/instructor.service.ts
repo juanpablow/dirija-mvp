@@ -1,13 +1,16 @@
-import prisma from '../config/database';
-import { CreateInstructorDTO, InstructorResponse } from '../types';
-import { Prisma } from '@prisma/client';
+import prisma from "../config/database";
+import { CreateInstructorDTO, InstructorResponse } from "../types";
+import { Prisma } from "@prisma/client";
+import { sendInstructorWelcomeEmail } from "./email.service";
 
 class InstructorService {
   /**
    * Cria um lead de instrutor (captura inicial de dados)
    * Não cria usuário ainda, apenas captura os dados de interesse
    */
-  async createInstructorLead(data: CreateInstructorDTO): Promise<InstructorResponse> {
+  async createInstructorLead(
+    data: CreateInstructorDTO
+  ): Promise<InstructorResponse> {
     try {
       // Verifica se já existe um instrutor com este email
       const existingInstructor = await prisma.instructor.findUnique({
@@ -15,7 +18,7 @@ class InstructorService {
       });
 
       if (existingInstructor) {
-        throw new Error('Este email já está cadastrado');
+        throw new Error("Este email já está cadastrado");
       }
 
       // Cria o instrutor como LEAD (sem usuário associado ainda)
@@ -24,7 +27,7 @@ class InstructorService {
           name: data.name,
           email: data.email,
           phone: data.phone,
-          status: 'LEAD', // Status inicial: apenas um lead
+          status: "LEAD", // Status inicial: apenas um lead
           isActive: false, // Inativo até completar o cadastro
         },
         select: {
@@ -37,20 +40,29 @@ class InstructorService {
         },
       });
 
+      // Envia email de boas-vindas de forma assíncrona (não bloqueia a resposta)
+      sendInstructorWelcomeEmail({
+        name: instructor.name,
+        email: instructor.email,
+      }).catch((error) => {
+        console.error("Erro ao enviar email de boas-vindas:", error);
+        // Não lança erro para não quebrar o fluxo de cadastro
+      });
+
       return instructor;
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         // P2002 é o código para unique constraint violation
-        if (error.code === 'P2002') {
-          throw new Error('Este email já está cadastrado');
+        if (error.code === "P2002") {
+          throw new Error("Este email já está cadastrado");
         }
       }
-      
+
       if (error instanceof Error) {
         throw error;
       }
-      
-      throw new Error('Erro ao criar cadastro de instrutor');
+
+      throw new Error("Erro ao criar cadastro de instrutor");
     }
   }
 
@@ -69,13 +81,13 @@ class InstructorService {
           createdAt: true,
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
       });
 
       return instructors;
     } catch (error) {
-      throw new Error('Erro ao buscar instrutores');
+      throw new Error("Erro ao buscar instrutores");
     }
   }
 
@@ -100,7 +112,7 @@ class InstructorService {
 
       return instructor;
     } catch (error) {
-      throw new Error('Erro ao buscar instrutor');
+      throw new Error("Erro ao buscar instrutor");
     }
   }
 }
