@@ -1,9 +1,12 @@
-import { CheckCircle2 } from 'lucide-react'
-import { InstructorRegistrationForm } from './InstructorRegistrationForm'
+import { CheckCircle2 } from "lucide-react";
+import { InstructorRegistrationForm } from "./InstructorRegistrationForm";
 
 export function InstructorCTASection() {
   return (
-    <section id="instructor-form" className="py-12 md:py-20 bg-gradient-to-br from-primary-600 to-primary-800">
+    <section
+      id="instructor-form"
+      className="py-12 md:py-20 bg-gradient-to-br from-primary-600 to-primary-800"
+    >
       <div className="container mx-auto container-padding">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
@@ -11,7 +14,8 @@ export function InstructorCTASection() {
               Cadastre-se como Instrutor Autônomo
             </h2>
             <p className="text-lg md:text-xl text-primary-50 leading-relaxed px-4">
-              A nova era da habilitação chegou e você pode ser protagonista dessa mudança.
+              A nova era da habilitação chegou e você pode ser protagonista
+              dessa mudança.
             </p>
           </div>
 
@@ -19,9 +23,12 @@ export function InstructorCTASection() {
             {/* Informações */}
             <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
               <p className="text-base md:text-lg text-gray-700 mb-6 leading-relaxed">
-                Com a regulamentação do instrutor autônomo de trânsito, motoristas experientes podem oferecer aulas práticas diretamente aos futuros condutores, com mais liberdade, autonomia e melhores ganhos.
+                Com a regulamentação do instrutor autônomo de trânsito,
+                motoristas experientes podem oferecer aulas práticas diretamente
+                aos futuros condutores, com mais liberdade, autonomia e melhores
+                ganhos.
               </p>
-              
+
               <div className="mb-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Por que se cadastrar?
@@ -29,7 +36,9 @@ export function InstructorCTASection() {
                 <div className="space-y-3">
                   <div className="flex items-start space-x-3">
                     <CheckCircle2 className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Mais visibilidade na sua região</span>
+                    <span className="text-gray-700">
+                      Mais visibilidade na sua região
+                    </span>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle2 className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
@@ -37,15 +46,21 @@ export function InstructorCTASection() {
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle2 className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Maior autonomia e renda</span>
+                    <span className="text-gray-700">
+                      Maior autonomia e renda
+                    </span>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle2 className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Perfil verificado e confiável</span>
+                    <span className="text-gray-700">
+                      Perfil verificado e confiável
+                    </span>
                   </div>
                   <div className="flex items-start space-x-3">
                     <CheckCircle2 className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">Plataforma simples e rápida</span>
+                    <span className="text-gray-700">
+                      Plataforma simples e rápida
+                    </span>
                   </div>
                 </div>
               </div>
@@ -54,9 +69,30 @@ export function InstructorCTASection() {
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                   Quem pode participar?
                 </h3>
-                <p className="text-sm text-gray-700 leading-relaxed">
-                  Instrutores de autoescola, motoristas experientes ou profissionais que desejam se credenciar como instrutor autônomo.
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  Instrutores de autoescola, motoristas experientes ou
+                  profissionais que desejam se credenciar como instrutor
+                  autônomo.
                 </p>
+                <a
+                  href="/faq"
+                  className="inline-flex items-center text-sm font-medium text-primary-700 hover:text-primary-900"
+                >
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Como obter certificação do Detran
+                </a>
               </div>
             </div>
 
@@ -68,5 +104,5 @@ export function InstructorCTASection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
