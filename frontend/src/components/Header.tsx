@@ -20,13 +20,18 @@ export function Header() {
             <span className="text-2xl font-bold text-gray-900">DiriJá</span>
           </Link>
           <div className="hidden md:flex items-center space-x-6">
-            <a
-              href="#instructor-form"
-              onClick={scrollToForm}
-              className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition cursor-pointer"
+            <Link
+              href="/faq"
+              className="text-gray-700 hover:text-primary-600 transition font-medium"
+            >
+              Perguntas Frequentes
+            </Link>
+            <Link
+              href="/#instructor-form"
+              className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition"
             >
               Seja um Instrutor
-            </a>
+            </Link>
           </div>
           <div className="md:hidden flex items-center space-x-3">
             <Link
@@ -35,13 +40,12 @@ export function Header() {
             >
               Guia
             </Link>
-            <a
-              href="#instructor-form"
-              onClick={scrollToForm}
-              className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm cursor-pointer"
+            <Link
+              href="/#instructor-form"
+              className="bg-primary-600 text-white px-4 py-2 rounded-lg text-sm"
             >
               Cadastrar
-            </a>
+            </Link>
           </div>
         </div>
       </nav>

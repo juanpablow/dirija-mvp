@@ -58,7 +58,7 @@ export default function FAQPage() {
               {/* Seção 1: Requisitos */}
               <section>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                  <span className="w-8 h-8 min-w-[2rem] bg-primary-600 text-white rounded-full flex items-center justify-center text-base font-bold mr-3 flex-shrink-0">
                     1
                   </span>
                   Requisitos para se tornar Instrutor Autônomo
@@ -135,7 +135,7 @@ export default function FAQPage() {
               {/* Seção 2: Certificação e Autorização */}
               <section>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                  <span className="w-8 h-8 min-w-[2rem] bg-primary-600 text-white rounded-full flex items-center justify-center text-base font-bold mr-3 flex-shrink-0">
                     2
                   </span>
                   Certificação e Autorização
@@ -186,7 +186,7 @@ export default function FAQPage() {
               {/* Seção 3: Veículo e Equipamentos */}
               <section>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                  <span className="w-8 h-8 min-w-[2rem] bg-primary-600 text-white rounded-full flex items-center justify-center text-base font-bold mr-3 flex-shrink-0">
                     3
                   </span>
                   Veículo e Equipamentos
@@ -232,7 +232,7 @@ export default function FAQPage() {
               {/* Seção 4: Atuação Profissional */}
               <section>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                  <span className="w-8 h-8 min-w-[2rem] bg-primary-600 text-white rounded-full flex items-center justify-center text-base font-bold mr-3 flex-shrink-0">
                     4
                   </span>
                   Atuação Profissional
@@ -256,8 +256,14 @@ export default function FAQPage() {
                             apto através dos sites oficiais
                           </li>
                           <li>
-                            Você pode se divulgar em redes sociais e outras
-                            plataformas (como o DiriJá)
+                            Para divulgar seus serviços,{" "}
+                            <a
+                              href="/#instructor-form"
+                              className="text-primary-600 hover:text-primary-700 font-semibold underline"
+                            >
+                              cadastre-se na plataforma DiriJá
+                            </a>
+                            .
                           </li>
                           <li>
                             Clientes podem consultar sua disponibilidade de
@@ -317,7 +323,7 @@ export default function FAQPage() {
               {/* Seção 5: Documentação e Fiscalização */}
               <section>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                  <span className="w-8 h-8 min-w-[2rem] bg-primary-600 text-white rounded-full flex items-center justify-center text-base font-bold mr-3 flex-shrink-0">
                     5
                   </span>
                   Documentação e Fiscalização
@@ -367,7 +373,7 @@ export default function FAQPage() {
               {/* Seção 6: Sobre o DiriJá */}
               <section>
                 <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <span className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">
+                  <span className="w-8 h-8 min-w-[2rem] bg-primary-600 text-white rounded-full flex items-center justify-center text-base font-bold mr-3 flex-shrink-0">
                     6
                   </span>
                   Sobre o DiriJá
@@ -405,7 +411,21 @@ export default function FAQPage() {
 
                   <FAQItem
                     question="Como faço para me cadastrar no DiriJá?"
-                    answer="Para se cadastrar como instrutor no DiriJá, basta clicar no botão 'Tornar-se Instrutor' na página inicial e preencher o formulário com suas informações. Nossa equipe entrará em contato assim que a plataforma estiver disponível."
+                    answer={
+                      <p>
+                        Para se cadastrar como instrutor no DiriJá, acesse o
+                        link{" "}
+                        <a
+                          href="/#instructor-form"
+                          className="text-primary-600 hover:text-primary-700 font-semibold underline"
+                        >
+                          https://dirija.app/#instructor-form
+                        </a>{" "}
+                        e preencha o formulário com suas informações. Nossa
+                        equipe entrará em contato assim que a plataforma estiver
+                        disponível.
+                      </p>
+                    }
                   />
                 </div>
               </section>
