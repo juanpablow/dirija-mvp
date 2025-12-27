@@ -38,7 +38,7 @@ export function Header() {
               href="/faq"
               className="text-gray-700 hover:text-primary-600 transition font-medium text-sm"
             >
-              Guia
+              Dúvidas
             </Link>
             <Link
               href="/#instructor-form"
