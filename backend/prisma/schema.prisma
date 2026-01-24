@@ -47,6 +47,7 @@ model Instructor {
   name              String
   email             String           @unique
   phone             String
+  isCredentialed    Boolean          @default(false)
   
   // Autenticação (adicionado quando completa o cadastro)
   password          String?

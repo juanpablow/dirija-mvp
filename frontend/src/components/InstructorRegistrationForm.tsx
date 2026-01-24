@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { useInstructorRegistration } from "@/hooks/useApi";
 import { trackInstructorLead } from "@/lib/gtag";
+import { AlertCircle, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 interface FormData {
   name: string;
   email: string;
   phone: string;
+  isCredentialed: boolean;
 }
 
 export function InstructorRegistrationForm() {
@@ -46,7 +46,7 @@ export function InstructorRegistrationForm() {
     } else {
       return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(
         7,
-        11
+        11,
       )}`;
     }
   };
@@ -315,6 +315,28 @@ export function InstructorRegistrationForm() {
               <span>{errors.phone.message}</span>
             </div>
           )}
+        </div>
+
+        {/* Campo Credenciado pelo Detran */}
+        <div className="flex items-start space-x-3">
+          <input
+            type="checkbox"
+            id="isCredentialed"
+            {...registerField("isCredentialed")}
+            className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
+          />
+          <div className="flex-1">
+            <label
+              htmlFor="isCredentialed"
+              className="text-sm font-medium text-gray-700 cursor-pointer"
+            >
+              Sou credenciado pelo Detran
+            </label>
+            <p className="text-xs text-gray-500 mt-1">
+              Marque esta opção se você já possui certificação oficial do Detran
+              para atuar como instrutor
+            </p>
+          </div>
         </div>
 
         <button
