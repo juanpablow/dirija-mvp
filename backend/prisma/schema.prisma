@@ -1,11 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -27,11 +27,11 @@ enum DayOfWeek {
 }
 
 enum InstructorStatus {
-  LEAD          // Lead capturado, ainda não completou cadastro
-  PENDING       // Cadastro completo, aguardando aprovação
-  APPROVED      // Aprovado e ativo
-  REJECTED      // Rejeitado
-  INACTIVE      // Inativo/Suspenso
+  LEAD // Lead capturado, ainda não completou cadastro
+  PENDING // Cadastro completo, aguardando aprovação
+  APPROVED // Aprovado e ativo
+  REJECTED // Rejeitado
+  INACTIVE // Inativo/Suspenso
 }
 
 enum StudentStatus {
@@ -41,82 +41,82 @@ enum StudentStatus {
 
 // Tabela de Instrutores
 model Instructor {
-  id                String           @id @default(uuid())
-  
-  // Informações básicas (capturadas no lead)
-  name              String
-  email             String           @unique
-  phone             String
-  isCredentialed    Boolean          @default(false)
-  
-  // Autenticação (adicionado quando completa o cadastro)
-  password          String?
-  emailVerified     Boolean          @default(false)
-  
-  // Informações profissionais (preenchidas depois)
-  licenseNumber     String?          @unique
-  licenseCategory   String?
-  yearsExperience   Int?
-  vehicleModel      String?
-  vehiclePlate      String?
-  vehicleYear       Int?
-  hasOwnVehicle     Boolean          @default(true)
-  
-  bio               String?
-  profileImage      String?
-  
-  // Localização
-  city              String?
-  state             String?
-  zipCode           String?
-  
-  // Financeiro
-  hourlyRate        Float?
-  
-  // Status
-  status            InstructorStatus @default(LEAD)
-  isActive          Boolean          @default(false)
-  
-  // Avaliações
-  rating            Float            @default(0)
-  totalLessons      Int              @default(0)
-  
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  id String @id @default(uuid())
 
-  availabilities    Availability[]
-  lessons           Lesson[]
+  // Informações básicas (capturadas no lead)
+  name           String
+  email          String  @unique
+  phone          String
+  isCredentialed Boolean @default(false)
+
+  // Autenticação (adicionado quando completa o cadastro)
+  password      String?
+  emailVerified Boolean @default(false)
+
+  // Informações profissionais (preenchidas depois)
+  licenseNumber   String? @unique
+  licenseCategory String?
+  yearsExperience Int?
+  vehicleModel    String?
+  vehiclePlate    String?
+  vehicleYear     Int?
+  hasOwnVehicle   Boolean @default(true)
+
+  bio          String?
+  profileImage String?
+
+  // Localização
+  city    String?
+  state   String?
+  zipCode String?
+
+  // Financeiro
+  hourlyRate Float?
+
+  // Status
+  status   InstructorStatus @default(LEAD)
+  isActive Boolean          @default(false)
+
+  // Avaliações
+  rating       Float @default(0)
+  totalLessons Int   @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  availabilities Availability[]
+  lessons        Lesson[]
 
   @@map("instructors")
 }
 
 // Tabela de Alunos
 model Student {
-  id              String        @id @default(uuid())
-  
-  // Informações básicas
-  name            String
-  email           String        @unique
-  phone           String
-  
-  // Autenticação
-  password        String?
-  emailVerified   Boolean       @default(false)
-  
-  // Informações pessoais
-  dateOfBirth     DateTime?
-  city            String?
-  state           String?
-  
-  hasPermit       Boolean       @default(false)
-  
-  // Status
-  status          StudentStatus @default(ACTIVE)
-  
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id String @id @default(uuid())
 
-  lessons         Lesson[]
+  // Informações básicas
+  name  String
+  email String @unique
+  phone String
+
+  // Autenticação
+  password      String?
+  emailVerified Boolean @default(false)
+
+  // Informações pessoais
+  dateOfBirth DateTime?
+  city        String?
+  state       String?
+
+  hasPermit Boolean @default(false)
+
+  // Status
+  status StudentStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lessons Lesson[]
 
   @@map("students")
 }
@@ -125,39 +125,39 @@ model Availability {
   id           String     @id @default(uuid())
   instructorId String
   instructor   Instructor @relation(fields: [instructorId], references: [id], onDelete: Cascade)
-  
-  dayOfWeek    DayOfWeek
-  startTime    String     // Format: "HH:MM"
-  endTime      String     // Format: "HH:MM"
-  
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+
+  dayOfWeek DayOfWeek
+  startTime String // Format: "HH:MM"
+  endTime   String // Format: "HH:MM"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("availabilities")
 }
 
 model Lesson {
-  id              String       @id @default(uuid())
-  instructorId    String
-  instructor      Instructor   @relation(fields: [instructorId], references: [id])
-  
-  studentId       String
-  student         Student      @relation(fields: [studentId], references: [id])
-  
-  scheduledDate   DateTime
-  duration        Int          // Duration in hours
-  location        String
-  
-  status          LessonStatus @default(PENDING)
-  
-  price           Float
-  
-  notes           String?
-  rating          Int?         // 1-5 rating from student
-  review          String?
-  
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id           String     @id @default(uuid())
+  instructorId String
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id])
+
+  scheduledDate DateTime
+  duration      Int // Duration in hours
+  location      String
+
+  status LessonStatus @default(PENDING)
+
+  price Float
+
+  notes  String?
+  rating Int? // 1-5 rating from student
+  review String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("lessons")
 }
