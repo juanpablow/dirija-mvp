@@ -1,9 +1,10 @@
-import { InstructorStatus } from '@prisma/client';
+import { InstructorStatus } from "@prisma/client";
 
 export interface CreateInstructorDTO {
   name: string;
   email: string;
   phone: string;
+  isCredentialed?: boolean;
 }
 
 export interface InstructorResponse {

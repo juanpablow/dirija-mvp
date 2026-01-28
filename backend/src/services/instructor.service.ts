@@ -9,7 +9,7 @@ class InstructorService {
    * Não cria usuário ainda, apenas captura os dados de interesse
    */
   async createInstructorLead(
-    data: CreateInstructorDTO
+    data: CreateInstructorDTO,
   ): Promise<InstructorResponse> {
     try {
       // Verifica se já existe um instrutor com este email
@@ -27,6 +27,7 @@ class InstructorService {
           name: data.name,
           email: data.email,
           phone: data.phone,
+          isCredentialed: data.isCredentialed ?? false,
           status: "LEAD", // Status inicial: apenas um lead
           isActive: false, // Inativo até completar o cadastro
         },
